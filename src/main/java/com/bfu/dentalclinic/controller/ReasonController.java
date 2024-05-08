@@ -1,24 +1,38 @@
 package com.bfu.dentalclinic.controller;
 
+import com.bfu.dentalclinic.controller.payload.NewReasonPayload;
 import com.bfu.dentalclinic.entity.Reason;
 import com.bfu.dentalclinic.repository.ReasonRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/reasons")
+@Controller
+@AllArgsConstructor
+@RequestMapping("/hospital/reason")
 public class ReasonController {
 
     private final ReasonRepository reasonRepository;
 
-    public ReasonController(ReasonRepository reasonRepository) {
-        this.reasonRepository = reasonRepository;
+    @GetMapping("list")
+    public String getAllReasons(Model model) {
+        model.addAttribute("reasons", this.reasonRepository.findAll());
+        return "reason/list";
     }
 
-    @PostMapping
-    public void createReason(@RequestBody Reason reason) {
-        reasonRepository.create(reason);
+    @GetMapping("admin")
+    public String getAdminReasons(Model model) {
+        model.addAttribute("reasons", this.reasonRepository.findAll());
+        return "reason/admin-reason";
+    }
+
+    @PostMapping("create-reason")
+    public String createReason(NewReasonPayload payload) {
+        reasonRepository.create(payload.title());
+        return "redirect:/hospital/reason/admin";
     }
 
     @PutMapping("/{id}")
@@ -27,18 +41,14 @@ public class ReasonController {
         reasonRepository.update(reason);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteReasonById(@PathVariable Long id) {
+    @PostMapping("/{id}")
+    public String deleteReasonById(@PathVariable Long id) {
         reasonRepository.deleteById(id);
+        return "redirect:/hospital/reason/admin";
     }
 
     @DeleteMapping
     public void deleteAllReasons() {
         reasonRepository.deleteAll();
-    }
-
-    @GetMapping
-    public List<Reason> getAllReasons() {
-        return reasonRepository.findAll();
     }
 }

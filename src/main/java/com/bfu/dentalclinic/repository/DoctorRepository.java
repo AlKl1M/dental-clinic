@@ -1,5 +1,6 @@
 package com.bfu.dentalclinic.repository;
 
+import com.bfu.dentalclinic.controller.payload.DoctorDTO;
 import com.bfu.dentalclinic.entity.Doctor;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,8 +15,8 @@ public class DoctorRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public void createDoctor(Doctor doctor) {
-        jdbcTemplate.update("INSERT INTO doctor (id, first_name, last_name, speciality_id) VALUES (?, ?, ?, ?)",
-                doctor.getId(), doctor.getFirstName(), doctor.getLastName(), doctor.getSpeciality_id());
+        jdbcTemplate.update("INSERT INTO doctor (first_name, last_name, speciality_id) VALUES (?, ?, ?)",
+                doctor.getFirstName(), doctor.getLastName(), doctor.getSpeciality_id());
     }
 
     public void updateDoctor(Doctor doctor) {
@@ -31,8 +32,9 @@ public class DoctorRepository {
         jdbcTemplate.update("DELETE FROM doctor");
     }
 
-    public List<Doctor> getAllDoctors() {
-        return jdbcTemplate.query("SELECT * FROM doctor",
-                (rs, rowNum) -> new Doctor(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getLong("speciality_id")));
+    public List<DoctorDTO> getAllDoctors() {
+        return jdbcTemplate.query("SELECT d.id, d.first_name, d.last_name, s.name as speciality_name FROM doctor d INNER JOIN speciality s ON d.speciality_id = s.id",
+                (rs, rowNum) -> new DoctorDTO(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("speciality_name")));
     }
+
 }

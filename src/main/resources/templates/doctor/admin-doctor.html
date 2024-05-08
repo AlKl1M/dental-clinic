@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <title>Список врачей &ndash; Клиника</title>
+</head>
+<body>
+<div th:replace="~{fragments/nav-bar/nav-bar :: nav}"></div>
+<div class="container">
+    <button class="button js-modal-trigger" data-target="modal-js-example">
+        Добавить нового врача
+    </button>
+    <div id="modal-js-example" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <div class="box">
+                <form method="post" action="/hospital/doctors/create-doctor">
+                    <div class="field">
+                        <label class="label">Имя</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="firstName">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Фамилия</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="lastName">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Специальность</label>
+                        <div class="control">
+                            <div class="select">
+                                <select name="speciality_name">
+                                    <option th:each="speciality : ${specialities}" th:text="${speciality?.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Создать</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <hr>
+    <div class="columns is-flex-wrap">
+        <div class="column is-4" data-th-each="doctor : ${doctors}">
+            <div class="card">
+                <div class="card-content">
+                    <div class="content">
+                        <p data-th-text="${doctor.getFirstName()}"></p>
+                        <p data-th-text="${doctor.getLastName()}"></p>
+                        <p data-th-text="${doctor.getSpecialityName()}"></p>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <form method="post" data-th-action="@{/hospital/doctors/{id}(id=${doctor.id})}">
+                        <button type="submit" class="card-footer-item">Удалить</button>
+                    </form>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/admin-js.js}"></script>
+</html>

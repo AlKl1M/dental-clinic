@@ -1,22 +1,40 @@
 package com.bfu.dentalclinic.controller;
 
+import com.bfu.dentalclinic.controller.payload.NewPatientPayload;
 import com.bfu.dentalclinic.entity.Patient;
 import com.bfu.dentalclinic.repository.PatientRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
+@Controller
 @AllArgsConstructor
-@RequestMapping("/patients")
+@RequestMapping("hospital/patient")
 public class PatientController {
 
     private PatientRepository patientRepository;
 
-    @PostMapping
-    public void createPatient(@RequestBody Patient patient) {
-        patientRepository.createPatient(patient);
+    @GetMapping("list")
+    public String getAllPatients(Model model) {
+        model.addAttribute("patients", this.patientRepository.getAllPatients());
+        return "patient/list";
+    }
+
+    @GetMapping("admin")
+    public String getAllPatientsAdmin(Model model) {
+        model.addAttribute("patients", this.patientRepository.getAllPatients());
+        return "patient/admin-patient";
+    }
+
+    @PostMapping("create-patient")
+    public String createPatient(NewPatientPayload payload) {
+        patientRepository.createPatient(
+                payload.firstName(),
+                payload.lastName(),
+                payload.dateOfBirth(),
+                payload.phoneNumber());
+        return "redirect:/hospital/patient/admin";
     }
 
     @PutMapping("/{id}")
@@ -25,18 +43,14 @@ public class PatientController {
         patientRepository.updatePatient(patient);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletePatientById(@PathVariable Long id) {
+    @PostMapping("/{id}")
+    public String deletePatientById(@PathVariable Long id) {
         patientRepository.deletePatientById(id);
+        return "redirect:/hospital/patient/admin";
     }
 
     @DeleteMapping
     public void deleteAllPatients() {
         patientRepository.deleteAllPatients();
-    }
-
-    @GetMapping
-    public List<Patient> getAllPatients() {
-        return patientRepository.getAllPatients();
     }
 }

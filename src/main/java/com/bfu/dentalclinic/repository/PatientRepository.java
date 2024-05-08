@@ -14,9 +14,9 @@ public class PatientRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    public void createPatient(Patient patient) {
+    public void createPatient(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber) {
         String sql = "INSERT INTO dental.patient (first_name, last_name, date_of_birth, phone_number) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, patient.getFirstName(), patient.getLastName(), patient.getDateOfBirth(), patient.getPhoneNumber());
+        jdbcTemplate.update(sql, firstName, lastName, dateOfBirth, phoneNumber);
     }
 
     public void updatePatient(Patient patient) {

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <title>История лечения &ndash; Клиника</title>
+</head>
+<body>
+<div th:replace="~{fragments/nav-bar/nav-bar :: nav}"></div>
+<div class="container">
+    <h3>history Treatment</h3>
+    <hr>
+    <div class="columns is-flex-wrap">
+        <div class="column is-4" data-th-each="history : ${histories}">
+            <div class="card">
+                <div class="card-content">
+                    <div class="content">
+                        <p data-th-text="${history.getAppointmentId()}"></p>
+                        <p data-th-text="${history.getDescription()}"></p>
+                        <p data-th-text="${history.getPrice()}"></p>
+                        <p data-th-text="${history.getDiscount()}"></p>
+                        <p data-th-text="${history.getDateOfTreatment()}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/admin-js.js}"></script>
+</html>

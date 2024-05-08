@@ -15,6 +15,6 @@ public class DoctorAppointment {
     private Long patientId;
     private Long doctorId;
     private LocalDate dateOfAppointment;
-    private BigDecimal timeOfVisit;
+    private LocalDate timeOfVisit;
     private Long reasonId;
 }

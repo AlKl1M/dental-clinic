@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS dental.doctor_appointment (
     id_patient INT,
     id_doctor INT,
     date_of_appointment DATE,
-    time_of_visit DECIMAL(10, 2),
+    time_of_visit DATE,
     reason_id INT,
     FOREIGN KEY (reason_id) REFERENCES  reason (ID) ON DELETE CASCADE,
     FOREIGN KEY (id_patient) REFERENCES patient (ID) ON DELETE CASCADE,

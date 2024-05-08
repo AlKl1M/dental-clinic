@@ -16,9 +16,12 @@ public class SpecialityRepository {
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Speciality(rs.getLong("id"), rs.getString("name")));
     }
 
-    public Long createSpeciality(Speciality speciality) {
-        String sql = "INSERT INTO speciality (name) VALUES (?) RETURNING id";
-        return jdbcTemplate.queryForObject(sql, Long.class, speciality.getName());
+    public Long findSpecialityIdByName(String specialityName) {
+        return jdbcTemplate.queryForObject("SELECT id FROM speciality WHERE name = ?", Long.class, specialityName);
+    }
+
+    public void createSpeciality(String name) {
+        jdbcTemplate.update("INSERT INTO speciality (name) VALUES (?)", name);
     }
 
     public void updateSpecialityName(Long id, String newName) {

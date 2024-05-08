@@ -1,5 +1,6 @@
 package com.bfu.dentalclinic.repository;
 
+import com.bfu.dentalclinic.controller.payload.NewHistoryPayload;
 import com.bfu.dentalclinic.entity.HistoryOfTreatment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,10 +16,10 @@ public class HistoryOfTreatmentRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void create(HistoryOfTreatment historyOfTreatment) {
+    public void create(NewHistoryPayload historyOfTreatment) {
         String sql = "INSERT INTO history_of_treatment(appointment_id, description, price, discount, date_of_treatment) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, historyOfTreatment.getAppointmentId(), historyOfTreatment.getDescription(),
-                historyOfTreatment.getPrice(), historyOfTreatment.getDiscount(), historyOfTreatment.getDateOfTreatment());
+        jdbcTemplate.update(sql, historyOfTreatment.appointmentId(), historyOfTreatment.description(),
+                historyOfTreatment.price(), historyOfTreatment.discount(), historyOfTreatment.dateOfTreatment());
     }
 
     public void update(HistoryOfTreatment historyOfTreatment) {

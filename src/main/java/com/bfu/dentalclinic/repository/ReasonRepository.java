@@ -12,9 +12,9 @@ import java.util.List;
 public class ReasonRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public void create(Reason reason) {
+    public void create(String title) {
         String sql = "INSERT INTO dental.reason(title) VALUES (?)";
-        jdbcTemplate.update(sql, reason.getTitle());
+        jdbcTemplate.update(sql, title);
     }
 
     public void update(Reason reason) {
