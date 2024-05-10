@@ -21,17 +21,11 @@ public class SpecialityController {
         return "speciality/list";
     }
 
-    @GetMapping("admin")
-    public String getAdminSpecialities(Model model) {
-        model.addAttribute("specialities", this.specialityRepository.getAllSpecialities());
-        return "speciality/admin-speciality";
-    }
-
     @PostMapping("create-speciality")
     public String createSpeciality(NewSpecialityPayload payload,
                                  Model model) {
         specialityRepository.createSpeciality(payload.name());
-        return "redirect:/hospital/speciality/admin";
+        return "redirect:/hospital/speciality/list";
     }
 
     @PutMapping("/id")
@@ -42,11 +36,12 @@ public class SpecialityController {
     @PostMapping("/{id}")
     public String deleteSpeciality(@PathVariable Long id) {
         specialityRepository.deleteSpeciality(id);
-        return "redirect:/hospital/speciality/admin";
+        return "redirect:/hospital/speciality/list";
     }
 
-    @DeleteMapping
-    public void deleteAllSpecialities() {
+    @PostMapping("delete-specialities")
+    public String deleteAllSpecialities() {
         specialityRepository.deleteAllSpecialities();
+        return "redirect:/hospital/speciality/list";
     }
 }

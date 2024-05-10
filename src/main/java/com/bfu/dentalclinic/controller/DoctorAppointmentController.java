@@ -31,20 +31,11 @@ public class DoctorAppointmentController {
         return "appointment/list";
     }
 
-    @GetMapping("admin")
-    public String getAllAppointmentsAdmin(Model model) {
-        model.addAttribute("appointments", doctorAppointmentRepository.getAllDoctorAppointments());
-        model.addAttribute("doctors", doctorRepository.getAllDoctors());
-        model.addAttribute("patients", patientRepository.getAllPatients());
-        model.addAttribute("reasons", reasonRepository.findAll());
-        return "appointment/admin-appointment";
-    }
-
     @PostMapping("create-appointment")
     public String createDoctorAppointment(NewAppointmentPayload doctorAppointment) {
         System.out.println(doctorAppointment.reason_id());
         doctorAppointmentRepository.createDoctorAppointment(doctorAppointment);
-        return "redirect:/hospital/appointments/admin";
+        return "redirect:/hospital/appointments/list";
     }
 
     @PutMapping
@@ -55,11 +46,12 @@ public class DoctorAppointmentController {
     @PostMapping("/{id}")
     public String deleteDoctorAppointmentById(@PathVariable Long id) {
         doctorAppointmentRepository.deleteDoctorAppointmentById(id);
-        return "redirect:/hospital/appointments/admin";
+        return "redirect:/hospital/appointments/list";
     }
 
-    @DeleteMapping
-    public void deleteAllDoctorAppointments() {
+    @PostMapping("/delete-appointments")
+    public String deleteAllDoctorAppointments() {
         doctorAppointmentRepository.deleteAllDoctorAppointments();
+        return "redirect:/hospital/appointments/list";
     }
 }

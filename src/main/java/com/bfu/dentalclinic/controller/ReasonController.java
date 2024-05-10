@@ -23,16 +23,10 @@ public class ReasonController {
         return "reason/list";
     }
 
-    @GetMapping("admin")
-    public String getAdminReasons(Model model) {
-        model.addAttribute("reasons", this.reasonRepository.findAll());
-        return "reason/admin-reason";
-    }
-
     @PostMapping("create-reason")
     public String createReason(NewReasonPayload payload) {
         reasonRepository.create(payload.title());
-        return "redirect:/hospital/reason/admin";
+        return "redirect:/hospital/reason/list";
     }
 
     @PutMapping("/{id}")
@@ -44,11 +38,12 @@ public class ReasonController {
     @PostMapping("/{id}")
     public String deleteReasonById(@PathVariable Long id) {
         reasonRepository.deleteById(id);
-        return "redirect:/hospital/reason/admin";
+        return "redirect:/hospital/reason/list";
     }
 
-    @DeleteMapping
-    public void deleteAllReasons() {
+    @PostMapping("/delete-reasons")
+    public String deleteAllReasons() {
         reasonRepository.deleteAll();
+        return "redirect:/hospital/reason/list";
     }
 }

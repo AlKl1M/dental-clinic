@@ -21,16 +21,10 @@ public class HistoryOfTreatmentController {
         return "treatment/list";
     }
 
-    @GetMapping("admin")
-    public String getAllHistoriesForAdmin(Model model) {
-        model.addAttribute("histories", historyOfTreatmentRepository.findAll());
-        return "treatment/admin-treatment";
-    }
-
     @PostMapping("create-history")
     public String createHistoryOfTreatment(NewHistoryPayload historyOfTreatment) {
         historyOfTreatmentRepository.create(historyOfTreatment);
-        return "redirect:/hospital/history-of-treatment/admin";
+        return "redirect:/hospital/history-of-treatment/list";
     }
 
     @PutMapping
@@ -41,11 +35,12 @@ public class HistoryOfTreatmentController {
     @PostMapping("/{id}")
     public String deleteHistoryOfTreatment(@PathVariable Long id) {
         historyOfTreatmentRepository.deleteById(id);
-        return "redirect:/hospital/history-of-treatment/admin";
+        return "redirect:/hospital/history-of-treatment/list";
     }
 
-    @DeleteMapping
-    public void deleteAllHistoryOfTreatments() {
+    @PostMapping("/delete-history")
+    public String deleteAllHistoryOfTreatments() {
         historyOfTreatmentRepository.deleteAll();
+        return "redirect:/hospital/history-of-treatment/list";
     }
 }

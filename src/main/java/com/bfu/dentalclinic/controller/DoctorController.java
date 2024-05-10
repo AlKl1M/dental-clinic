@@ -17,19 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class DoctorController {
     private final DoctorRepository doctorRepository;
     private final DoctorService doctorService;
-    private final SpecialityRepository specialityRepository;
 
     @GetMapping("list")
     public String getAllDoctors(Model model) {
         model.addAttribute("doctors", this.doctorService.getAllDoctors());
         return "doctor/list";
-    }
-
-    @GetMapping("admin")
-    public String getAllDoctorsAdmin(Model model) {
-        model.addAttribute("doctors", this.doctorService.getAllDoctors());
-        model.addAttribute("specialities", this.specialityRepository.getAllSpecialities());
-        return "doctor/admin-doctor";
     }
 
     @PostMapping("create-doctor")
@@ -39,25 +31,25 @@ public class DoctorController {
         payload.firstName();
         payload.lastName();
         doctorService.createDoctor(payload.firstName(), payload.lastName(), payload.speciality_name());
-        return "redirect:/hospital/doctors/admin";
+        return "redirect:/hospital/doctors/list";
     }
 
     @PutMapping("/{id}")
     public String updateDoctor(@PathVariable Long id, @RequestBody Doctor doctor) {
         doctor.setId(id);
         doctorRepository.updateDoctor(doctor);
-        return "redirect:/hospital/doctors/admin";
+        return "redirect:/hospital/doctors/list";
     }
 
     @PostMapping("/{id}")
     public String deleteDoctorById(@PathVariable Long id) {
         doctorRepository.deleteDoctorById(id);
-        return "redirect:/hospital/doctors/admin";
+        return "redirect:/hospital/doctors/list";
     }
 
-    @DeleteMapping
+    @PostMapping("/delete-doctors")
     public String deleteAllDoctors() {
         doctorRepository.deleteAllDoctors();
-        return "redirect:/hospital/list/admin";
+        return "redirect:/hospital/doctors/list";
     }
 }

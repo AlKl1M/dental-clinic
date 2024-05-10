@@ -8,25 +8,72 @@
 <body>
 <div th:replace="~{fragments/nav-bar/nav-bar :: nav}"></div>
 <div class="container">
-    <h3>doctor Directory</h3>
+    <h2>Список пациентов</h2>
+    <button class="button js-modal-trigger" data-target="modal-js-example">
+        Добавить нового пациента
+    </button>
+    <form method="post" data-th-action="@{/hospital/patient/delete-patients}">
+        <button type="submit" class="button">Удалить всех пациентов</button>
+    </form>
+    <div id="modal-js-example" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <div class="box">
+                <form method="post" action="/hospital/patient/create-patient">
+                    <div class="field">
+                        <label class="label">Имя</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="firstName">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Фамилия</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="lastName">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Дата рождения</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="dateOfBirth">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Номер телефона</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="phoneNumber">
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Создать</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
     <hr>
     <div class="columns is-flex-wrap">
         <div class="column is-4" data-th-each="patient : ${patients}">
             <div class="card">
                 <div class="card-content">
                     <div class="content">
-                        <p data-th-text="${patient.getFirstName()}"></p>
-                        <p data-th-text="${patient.getLastName()}"></p>
-                        <p data-th-text="${patient.getDateOfBirth()}"></p>
-                        <p data-th-text="${patient.getPhoneNumber()}"></p>
+                        <p data-th-text="'Имя: ' + ${patient.getFirstName()}"></p>
+                        <p data-th-text="'Фамилия: ' + ${patient.getLastName()}"></p>
+                        <p data-th-text="'Дата рождения: ' + ${patient.getDateOfBirth()}"></p>
+                        <p data-th-text="'Номер телефона: ' + ${patient.getPhoneNumber()}"></p>
                     </div>
                 </div>
-                <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Записаться на прием</a>
-                </footer>
+                <form method="post" data-th-action="@{/hospital/patient/{id}(id=${patient.id})}">
+                    <button type="submit" class="card-footer-item">Удалить</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 </body>
+<script type="text/javascript" th:src="@{/js/admin-js.js}"></script>
 </html>

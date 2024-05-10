@@ -8,7 +8,35 @@
 <body>
 <div th:replace="~{fragments/nav-bar/nav-bar :: nav}"></div>
 <div class="container">
-    <h3>reason Directory</h3>
+    <h2>Список причин</h2>
+    <button class="button js-modal-trigger" data-target="modal-js-example">
+        Добавить новую причину
+    </button>
+    <form method="post" data-th-action="@{/hospital/reason/delete-reasons}">
+        <button type="submit" class="button">Удалить все причины</button>
+    </form>
+    <div id="modal-js-example" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <div class="box">
+                <form method="post" action="/hospital/reason/create-reason">
+                    <div class="field">
+                        <label class="label">Название</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="title">
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Создать</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
     <hr>
     <div class="columns is-flex-wrap">
         <div class="column is-4" data-th-each="reason : ${reasons}">
@@ -18,9 +46,15 @@
                         <p data-th-text="${reason.getTitle()}"></p>
                     </div>
                 </div>
+                <footer class="card-footer">
+                    <form method="post" data-th-action="@{/hospital/reason/{id}(id=${reason.id})}">
+                        <button type="submit" class="card-footer-item">Удалить</button>
+                    </form>
+                </footer>
             </div>
         </div>
     </div>
 </div>
 </body>
+<script type="text/javascript" th:src="@{/js/admin-js.js}"></script>
 </html>

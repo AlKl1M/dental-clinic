@@ -21,12 +21,6 @@ public class PatientController {
         return "patient/list";
     }
 
-    @GetMapping("admin")
-    public String getAllPatientsAdmin(Model model) {
-        model.addAttribute("patients", this.patientRepository.getAllPatients());
-        return "patient/admin-patient";
-    }
-
     @PostMapping("create-patient")
     public String createPatient(NewPatientPayload payload) {
         patientRepository.createPatient(
@@ -34,7 +28,7 @@ public class PatientController {
                 payload.lastName(),
                 payload.dateOfBirth(),
                 payload.phoneNumber());
-        return "redirect:/hospital/patient/admin";
+        return "redirect:/hospital/patient/list";
     }
 
     @PutMapping("/{id}")
@@ -46,11 +40,12 @@ public class PatientController {
     @PostMapping("/{id}")
     public String deletePatientById(@PathVariable Long id) {
         patientRepository.deletePatientById(id);
-        return "redirect:/hospital/patient/admin";
+        return "redirect:/hospital/patient/list";
     }
 
-    @DeleteMapping
-    public void deleteAllPatients() {
+    @PostMapping("/delete-patients")
+    public String deleteAllPatients() {
         patientRepository.deleteAllPatients();
+        return "redirect:/hospital/patient/list";
     }
 }
