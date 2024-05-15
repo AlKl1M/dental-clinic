@@ -61,6 +61,7 @@
             <div class="card">
                 <div class="card-content">
                     <div class="content">
+                        <a data-th-href="@{/hospital/patient/list/{id}(id=${patient.getId()})}" data-th-text="'ID: ' + ${patient.getId()}"></a>
                         <p data-th-text="'Имя: ' + ${patient.getFirstName()}"></p>
                         <p data-th-text="'Фамилия: ' + ${patient.getLastName()}"></p>
                         <p data-th-text="'Дата рождения: ' + ${patient.getDateOfBirth()}"></p>

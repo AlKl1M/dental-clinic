@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product Page Detail</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+</head>
+<body>
+<div th:replace="~{fragments/nav-bar/nav-bar :: nav}"></div>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4" data-th-text="'ID лечения: ' + ${history.getId()}"></p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'ID Обращения : '  + ${history.getAppointmentId()}"></p>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Описание: ' + ' ' + ${history.getDescription()}"></p>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Дата лечения: ' + ${history.getDateOfTreatment()}"></p>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Стоимость: ' + ' ' + ${history.getPrice()}"></p>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Скидка: ' + ' ' + ${history.getDiscount()}"></p>
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <form method="post" data-th-action="@{/hospital/history-of-treatment/{id}(id=${history.getId()})}">
+                            <button type="submit" class="card-footer-item">Удалить</button>
+                        </form>
+                    </footer>
+                </div>
+            </div>
+            <div class="column highlight-full">
+                <form method="post" data-th-action="@{/hospital/history-of-treatment/update-history/{id}(id=${history.getId()})}">
+                    <div class="field">
+                        <label class="label">Номер обращения</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="appointmentId">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Описание</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="description">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Цена</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="price">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Скидка</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="discount">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Дата лечения</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="dateOfTreatment">
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Изменить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

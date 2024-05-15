@@ -1,6 +1,7 @@
 package com.bfu.dentalclinic.controller;
 
 import com.bfu.dentalclinic.controller.payload.NewHistoryPayload;
+import com.bfu.dentalclinic.controller.payload.UpdateHistoryPayload;
 import com.bfu.dentalclinic.entity.HistoryOfTreatment;
 import com.bfu.dentalclinic.repository.HistoryOfTreatmentRepository;
 import lombok.AllArgsConstructor;
@@ -21,15 +22,24 @@ public class HistoryOfTreatmentController {
         return "treatment/list";
     }
 
+    @GetMapping("/list/{id}")
+    public String getAllHistories(@PathVariable Long id, Model model) {
+        model.addAttribute("history", historyOfTreatmentRepository.findById(id));
+        return "treatment/detail";
+    }
+
     @PostMapping("create-history")
     public String createHistoryOfTreatment(NewHistoryPayload historyOfTreatment) {
         historyOfTreatmentRepository.create(historyOfTreatment);
         return "redirect:/hospital/history-of-treatment/list";
     }
 
-    @PutMapping
-    public void updateHistoryOfTreatment(@RequestBody HistoryOfTreatment historyOfTreatment) {
-        historyOfTreatmentRepository.update(historyOfTreatment);
+    @PostMapping("/update-history/{id}")
+    public String updateHistoryOfTreatment(@PathVariable Long id, UpdateHistoryPayload historyOfTreatment) {
+        historyOfTreatmentRepository.update(id, historyOfTreatment.appointmentId(),
+                historyOfTreatment.description(), historyOfTreatment.price(), historyOfTreatment.discount(),
+                historyOfTreatment.dateOfTreatment());
+        return "redirect:/hospital/history-of-treatment/list/" + id;
     }
 
     @PostMapping("/{id}")

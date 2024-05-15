@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product Page Detail</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+</head>
+<body>
+<div th:replace="~{fragments/nav-bar/nav-bar :: nav}"></div>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4" data-th-text="${doctor.getFirstName()} + ' ' + ${doctor.getLastName()}"></p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Специальность: ' + ' ' + ${doctor.getSpeciality_id()}"></p>
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <form method="post" data-th-action="@{/hospital/doctors/{id}(id=${doctor.getId()})}">
+                            <button type="submit" class="card-footer-item">Удалить</button>
+                        </form>
+                    </footer>
+                </div>
+            </div>
+            <div class="column highlight-full">
+                <form method="post" data-th-action="@{/hospital/doctors/update-doctor/{id}(id=${doctor.getId()})}">
+                    <div class="field">
+                        <label class="label">Имя</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="firstName">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Фамилия</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" name="lastName">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Специальность</label>
+                        <div class="control">
+                            <div class="select">
+                                <select name="speciality_id">
+                                    <option th:each="speciality : ${specialities}" th:text="${speciality?.getName()}" th:value="${speciality.getId()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Изменить</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+</section>
+</body>
+</html>

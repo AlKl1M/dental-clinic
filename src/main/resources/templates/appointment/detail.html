@@ -1,26 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product Page Detail</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-    <title>Обращения &ndash; Стоматология</title>
 </head>
 <body>
 <div th:replace="~{fragments/nav-bar/nav-bar :: nav}"></div>
-<div class="container">
-    <h2>Список обращений</h2>
-    <button class="button js-modal-trigger" data-target="modal-js-example">
-        Создать новую запись
-    </button>
-    <form method="post" data-th-action="@{/hospital/appointments/delete-appointments}">
-        <button type="submit" class="button">Удалить все обращения</button>
-    </form>
-    <div id="modal-js-example" class="modal">
-        <div class="modal-background"></div>
 
-        <div class="modal-content">
-            <div class="box">
-                <form method="post" action="/hospital/appointments/create-appointment">
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4" data-th-text="${appointment.getPatient().getFirstName()} + ' ' + ${appointment.getPatient().getLastName()}"></p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'ID: ' + ' ' + ${appointment.getId()}"></p>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Лечащий врач: ' + ' ' + ${appointment.getDoctor().getFirstName()} + ' ' + ${appointment.getDoctor().getLastName()}"></p>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Пациент: ' + ' ' + ${appointment.getPatient().getFirstName()} + ' ' + ${appointment.getPatient().getLastName()}"></p>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Причина обращения: ' + ' ' + ${appointment.getReason().getTitle()}"></p>
+                        </div>
+                        <div class="content">
+                            <p data-th-text="'Дата обращения: ' + ' ' + ${appointment.getDateOfAppointment()}"></p>
+                            <p data-th-text="'Время обращения: ' + ' ' + ${appointment.getTimeOfVisit()}"></p>
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <form method="post" data-th-action="@{/hospital/appointments/{id}(id=${appointment.id})}">
+                            <button type="submit" class="card-footer-item">Удалить</button>
+                        </form>
+                    </footer>
+                </div>
+            </div>
+            <div class="column highlight-full">
+                <form method="post" data-th-action="@{/hospital/appointments/update-appointment/{id}(id=${appointment.getId()})}">
                     <div class="field">
                         <label class="label">Дата обращения</label>
                         <div class="control">
@@ -65,37 +93,13 @@
                     </div>
                     <div class="field is-grouped">
                         <div class="control">
-                            <button type="submit" class="button is-link">Создать</button>
+                            <button type="submit" class="button is-link">Изменить</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <button class="modal-close is-large" aria-label="close"></button>
     </div>
-    <hr>
-    <div class="columns is-flex-wrap">
-        <div class="column is-4" data-th-each="appointment : ${appointments}">
-            <div class="card">
-                <div class="card-content">
-                    <div class="content">
-                        <a  data-th-href="@{/hospital/appointments/list/{id}(id=${appointment.getId()})}" data-th-text="'ID обращения: ' + ${appointment.getId()}"></a>
-                        <p data-th-text="'ФИО врача: ' + ${appointment.getDoctor().getFirstName()} + ${appointment.getDoctor().getLastName()}"></p>
-                        <p data-th-text="'ФИО Пациента: ' + ${appointment.getPatient().getFirstName()} + ${appointment.getPatient().getLastName()}"></p>
-                        <p data-th-text="'Причина посещения: ' + ${appointment.getReason().getTitle()}"></p>
-                        <p data-th-text="'Дата обращения: ' + ${appointment.getDateOfAppointment()}"></p>
-                        <p data-th-text="'Время посещения: ' + ${appointment.getTimeOfVisit()}"></p>
-                    </div>
-                </div>
-                <footer class="card-footer">
-                    <form method="post" data-th-action="@{/hospital/appointments/{id}(id=${appointment.id})}">
-                        <button type="submit" class="card-footer-item">Удалить</button>
-                    </form>
-                </footer>
-            </div>
-        </div>
-    </div>
-</div>
+</section>
 </body>
-<script type="text/javascript" th:src="@{/js/admin-js.js}"></script>
 </html>

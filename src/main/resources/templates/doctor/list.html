@@ -20,7 +20,7 @@
 
         <div class="modal-content">
             <div class="box">
-                <form method="post" action="/hospital/doctors/create-doctors">
+                <form method="post" action="/hospital/doctors/create-doctor">
                     <div class="field">
                         <label class="label">Имя</label>
                         <div class="control">
@@ -59,6 +59,7 @@
             <div class="card">
                 <div class="card-content">
                     <div class="content">
+                        <a data-th-href="@{/hospital/doctors/list/{id}(id=${doctor.getId()})}" data-th-text="'ID: ' + ${doctor.getId()}"></a>
                         <p data-th-text="'Имя: ' + ${doctor.getFirstName()}"></p>
                         <p data-th-text="'Фамилия: ' + ${doctor.getLastName()}"></p>
                         <p data-th-text="'Специальность: ' + ${doctor.getSpecialityName()}"></p>

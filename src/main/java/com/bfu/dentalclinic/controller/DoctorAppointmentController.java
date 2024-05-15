@@ -2,6 +2,7 @@ package com.bfu.dentalclinic.controller;
 
 import com.bfu.dentalclinic.controller.payload.AppointmentDTO;
 import com.bfu.dentalclinic.controller.payload.NewAppointmentPayload;
+import com.bfu.dentalclinic.controller.payload.UpdateAppointmentPayload;
 import com.bfu.dentalclinic.entity.DoctorAppointment;
 import com.bfu.dentalclinic.repository.DoctorAppointmentRepository;
 import com.bfu.dentalclinic.repository.DoctorRepository;
@@ -31,16 +32,26 @@ public class DoctorAppointmentController {
         return "appointment/list";
     }
 
+    @GetMapping("/list/{id}")
+    public String getAppointmentById(@PathVariable Long id, Model model) {
+        model.addAttribute("appointment", doctorAppointmentRepository.getDoctorAppointmentById(id));
+        model.addAttribute("doctors", doctorRepository.getAllDoctors());
+        model.addAttribute("patients", patientRepository.getAllPatients());
+        model.addAttribute("reasons", reasonRepository.findAll());
+        return "appointment/detail";
+    }
+
     @PostMapping("create-appointment")
     public String createDoctorAppointment(NewAppointmentPayload doctorAppointment) {
-        System.out.println(doctorAppointment.reason_id());
         doctorAppointmentRepository.createDoctorAppointment(doctorAppointment);
         return "redirect:/hospital/appointments/list";
     }
 
-    @PutMapping
-    public void updateDoctorAppointment(@RequestBody DoctorAppointment doctorAppointment) {
-        doctorAppointmentRepository.updateDoctorAppointment(doctorAppointment);
+    @PostMapping("update-appointment/{id}")
+    public String updateDoctorAppointment(@PathVariable Long id, UpdateAppointmentPayload payload) {
+        doctorAppointmentRepository.updateDoctorAppointment(id, payload.patient_id(), payload.doctor_id(),
+                payload.dateOfAppointment(), payload.timeOfVisit(), payload.reason_id());
+        return "redirect:/hospital/appointments/list/" + id;
     }
 
     @PostMapping("/{id}")

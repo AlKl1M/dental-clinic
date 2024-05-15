@@ -1,6 +1,7 @@
 package com.bfu.dentalclinic.controller;
 
 import com.bfu.dentalclinic.controller.payload.NewPatientPayload;
+import com.bfu.dentalclinic.controller.payload.UpdatePatientPayload;
 import com.bfu.dentalclinic.entity.Patient;
 import com.bfu.dentalclinic.repository.PatientRepository;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,13 @@ public class PatientController {
         return "patient/list";
     }
 
+    @GetMapping("/list/{id}")
+    public String detailPatient(@PathVariable Long id,
+                                Model model) {
+        model.addAttribute("patient", patientRepository.getPatientById(id));
+        return "patient/detail";
+    }
+
     @PostMapping("create-patient")
     public String createPatient(NewPatientPayload payload) {
         patientRepository.createPatient(
@@ -31,10 +39,14 @@ public class PatientController {
         return "redirect:/hospital/patient/list";
     }
 
-    @PutMapping("/{id}")
-    public void updatePatient(@PathVariable Long id, @RequestBody Patient patient) {
-        patient.setId(id);
-        patientRepository.updatePatient(patient);
+    @PostMapping("/update-patient/{id}")
+    public String updatePatient(@PathVariable Long id, UpdatePatientPayload payload) {
+        patientRepository.updatePatient(id,
+                payload.firstName(),
+                payload.lastName(),
+                payload.dateOfBirth(),
+                payload.phoneNumber());
+        return "redirect:/hospital/patient/list/" + id;
     }
 
     @PostMapping("/{id}")
