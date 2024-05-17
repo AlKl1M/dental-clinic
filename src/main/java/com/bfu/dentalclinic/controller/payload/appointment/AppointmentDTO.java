@@ -1,4 +1,4 @@
-package com.bfu.dentalclinic.controller.payload;
+package com.bfu.dentalclinic.controller.payload.appointment;
 
 import com.bfu.dentalclinic.entity.Doctor;
 import com.bfu.dentalclinic.entity.Patient;

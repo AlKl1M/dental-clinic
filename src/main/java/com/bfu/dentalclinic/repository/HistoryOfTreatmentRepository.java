@@ -1,6 +1,6 @@
 package com.bfu.dentalclinic.repository;
 
-import com.bfu.dentalclinic.controller.payload.NewHistoryPayload;
+import com.bfu.dentalclinic.controller.payload.history.NewHistoryPayload;
 import com.bfu.dentalclinic.entity.HistoryOfTreatment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

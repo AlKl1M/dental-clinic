@@ -12,28 +12,28 @@ import java.util.List;
 public class ReasonRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public void create(String title) {
+    public List<Reason> getAllReasons() {
+        String sql = "SELECT * FROM dental.reason";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Reason(rs.getLong("id"), rs.getString("title")));
+    }
+
+    public void createReason(String title) {
         String sql = "INSERT INTO dental.reason(title) VALUES (?)";
         jdbcTemplate.update(sql, title);
     }
 
-    public void update(Reason reason) {
+    public void updateReason(Long id, String title) {
         String sql = "UPDATE dental.reason SET title = ? WHERE id = ?";
-        jdbcTemplate.update(sql, reason.getTitle(), reason.getId());
+        jdbcTemplate.update(sql, title, id);
     }
 
-    public void deleteById(Long id) {
+    public void deleteReasonById(Long id) {
         String sql = "DELETE FROM dental.reason WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
 
-    public void deleteAll() {
+    public void deleteAllReasons() {
         String sql = "DELETE FROM dental.reason";
         jdbcTemplate.update(sql);
-    }
-
-    public List<Reason> findAll() {
-        String sql = "SELECT * FROM dental.reason";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Reason(rs.getLong("id"), rs.getString("title")));
     }
 }

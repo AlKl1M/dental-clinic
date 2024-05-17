@@ -1,8 +1,7 @@
 package com.bfu.dentalclinic.controller;
 
-import com.bfu.dentalclinic.controller.payload.NewHistoryPayload;
-import com.bfu.dentalclinic.controller.payload.UpdateHistoryPayload;
-import com.bfu.dentalclinic.entity.HistoryOfTreatment;
+import com.bfu.dentalclinic.controller.payload.history.NewHistoryPayload;
+import com.bfu.dentalclinic.controller.payload.history.UpdateHistoryPayload;
 import com.bfu.dentalclinic.repository.HistoryOfTreatmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.bfu.dentalclinic.controller.payload;
+package com.bfu.dentalclinic.controller.payload.history;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

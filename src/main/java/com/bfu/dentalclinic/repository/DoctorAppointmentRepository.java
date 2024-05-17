@@ -1,11 +1,11 @@
 package com.bfu.dentalclinic.repository;
 
-import com.bfu.dentalclinic.controller.payload.AppointmentDTO;
-import com.bfu.dentalclinic.controller.payload.NewAppointmentPayload;
+import com.bfu.dentalclinic.controller.payload.appointment.AppointmentDTO;
+import com.bfu.dentalclinic.controller.payload.appointment.NewAppointmentPayload;
 import com.bfu.dentalclinic.entity.Doctor;
-import com.bfu.dentalclinic.entity.DoctorAppointment;
 import com.bfu.dentalclinic.entity.Patient;
 import com.bfu.dentalclinic.entity.Reason;
+import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,37 +13,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class DoctorAppointmentRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    public DoctorAppointmentRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    public void createDoctorAppointment(NewAppointmentPayload doctorAppointment) {
-        String sql = "INSERT INTO doctor_appointment (id_patient, id_doctor, date_of_appointment, time_of_visit, reason_id) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, doctorAppointment.patient_id(), doctorAppointment.doctor_id(),
-                doctorAppointment.dateOfAppointment(), doctorAppointment.timeOfVisit(),
-                doctorAppointment.reason_id());
-    }
-
-    public void updateDoctorAppointment(Long id, Long patient_id, Long doctor_id, LocalDate dateOfAppointment, LocalDate timeOfVisit, Long reason_id) {
-        String sql = "UPDATE doctor_appointment SET id_patient = ?, id_doctor = ?, date_of_appointment = ?, time_of_visit = ?, reason_id = ? WHERE id = ?";
-        jdbcTemplate.update(sql, patient_id, doctor_id,
-                dateOfAppointment, timeOfVisit,
-                reason_id, id);
-    }
-
-    public void deleteDoctorAppointmentById(Long id) {
-        String sql = "DELETE FROM doctor_appointment WHERE id = ?";
-        jdbcTemplate.update(sql, id);
-    }
-
-    public void deleteAllDoctorAppointments() {
-        String sql = "DELETE FROM doctor_appointment";
-        jdbcTemplate.update(sql);
-    }
 
     public List<AppointmentDTO> getAllDoctorAppointments() {
         String sql = "SELECT da.id, da.id_patient, da.id_doctor, da.date_of_appointment, da.time_of_visit, da.reason_id, "
@@ -112,5 +85,29 @@ public class DoctorAppointmentRepository {
                         rs.getString("reason_title")
                 )
         ));
+    }
+
+    public void createDoctorAppointment(NewAppointmentPayload doctorAppointment) {
+        String sql = "INSERT INTO doctor_appointment (id_patient, id_doctor, date_of_appointment, time_of_visit, reason_id) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, doctorAppointment.patient_id(), doctorAppointment.doctor_id(),
+                doctorAppointment.dateOfAppointment(), doctorAppointment.timeOfVisit(),
+                doctorAppointment.reason_id());
+    }
+
+    public void updateDoctorAppointment(Long id, Long patient_id, Long doctor_id, LocalDate dateOfAppointment, LocalDate timeOfVisit, Long reason_id) {
+        String sql = "UPDATE doctor_appointment SET id_patient = ?, id_doctor = ?, date_of_appointment = ?, time_of_visit = ?, reason_id = ? WHERE id = ?";
+        jdbcTemplate.update(sql, patient_id, doctor_id,
+                dateOfAppointment, timeOfVisit,
+                reason_id, id);
+    }
+
+    public void deleteDoctorAppointmentById(Long id) {
+        String sql = "DELETE FROM doctor_appointment WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public void deleteAllDoctorAppointments() {
+        String sql = "DELETE FROM doctor_appointment";
+        jdbcTemplate.update(sql);
     }
 }

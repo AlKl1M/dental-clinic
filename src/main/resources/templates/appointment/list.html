@@ -17,7 +17,6 @@
     </form>
     <div id="modal-js-example" class="modal">
         <div class="modal-background"></div>
-
         <div class="modal-content">
             <div class="box">
                 <form method="post" action="/hospital/appointments/create-appointment">
@@ -79,7 +78,6 @@
             <div class="card">
                 <div class="card-content">
                     <div class="content">
-                        <a  data-th-href="@{/hospital/appointments/list/{id}(id=${appointment.getId()})}" data-th-text="'ID обращения: ' + ${appointment.getId()}"></a>
                         <p data-th-text="'ФИО врача: ' + ${appointment.getDoctor().getFirstName()} + ${appointment.getDoctor().getLastName()}"></p>
                         <p data-th-text="'ФИО Пациента: ' + ${appointment.getPatient().getFirstName()} + ${appointment.getPatient().getLastName()}"></p>
                         <p data-th-text="'Причина посещения: ' + ${appointment.getReason().getTitle()}"></p>
@@ -88,8 +86,11 @@
                     </div>
                 </div>
                 <footer class="card-footer">
-                    <form method="post" data-th-action="@{/hospital/appointments/{id}(id=${appointment.id})}">
-                        <button type="submit" class="card-footer-item">Удалить</button>
+                    <form class="card-footer-item" method="post" data-th-action="@{/hospital/appointments/{id}(id=${appointment.id})}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                    <form class="card-footer-item" method="get" data-th-action="@{/hospital/appointments/list/{id}(id=${appointment.getId()})}">
+                        <button type="submit">Подробнее</button>
                     </form>
                 </footer>
             </div>

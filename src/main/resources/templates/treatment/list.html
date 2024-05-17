@@ -67,7 +67,6 @@
             <div class="card">
                 <div class="card-content">
                     <div class="content">
-                        <a  data-th-href="@{/hospital/history-of-treatment/list/{id}(id=${history.getId()})}" data-th-text="'ID лечения: ' + ${history.getId()}"></a>
                         <p data-th-text="${history.getAppointmentId()}"></p>
                         <p data-th-text="${history.getDescription()}"></p>
                         <p data-th-text="${history.getPrice()}"></p>
@@ -76,8 +75,11 @@
                     </div>
                 </div>
                 <footer class="card-footer">
-                    <form method="post" data-th-action="@{/hospital/history-of-treatment/{id}(id=${history.id})}">
-                        <button type="submit" class="card-footer-item">Удалить</button>
+                    <form class="card-footer-item" method="post" data-th-action="@{/hospital/history-of-treatment/{id}(id=${history.id})}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                    <form class="card-footer-item" method="get" data-th-action="@{/hospital/history-of-treatment/list/{id}(id=${history.getId()})}">
+                        <button type="submit">Подробнее</button>
                     </form>
                 </footer>
             </div>

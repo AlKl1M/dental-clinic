@@ -1,4 +1,4 @@
-package com.bfu.dentalclinic.controller.payload;
+package com.bfu.dentalclinic.controller.payload.patient;
 
 import java.time.LocalDate;
 

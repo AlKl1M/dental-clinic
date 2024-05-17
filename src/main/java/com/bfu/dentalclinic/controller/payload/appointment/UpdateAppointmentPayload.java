@@ -1,12 +1,12 @@
-package com.bfu.dentalclinic.controller.payload;
+package com.bfu.dentalclinic.controller.payload.appointment;
 
 import java.time.LocalDate;
 
-public record NewAppointmentPayload(
-        Long id,
+public record UpdateAppointmentPayload(
         Long patient_id,
         Long doctor_id,
         LocalDate dateOfAppointment,
         LocalDate timeOfVisit,
-        Long reason_id) {
+        Long reason_id
+) {
 }

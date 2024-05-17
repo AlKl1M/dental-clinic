@@ -1,6 +1,6 @@
 package com.bfu.dentalclinic.repository;
 
-import com.bfu.dentalclinic.controller.payload.UpdatePatientPayload;
+import com.bfu.dentalclinic.controller.payload.doctor.DoctorDTO;
 import com.bfu.dentalclinic.entity.Patient;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +14,36 @@ import java.util.List;
 public class PatientRepository {
 
     private JdbcTemplate jdbcTemplate;
+
+    public List<Patient> getAllPatients() {
+        String sql = "SELECT * FROM dental.patient";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Patient(
+                rs.getLong("id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getObject("date_of_birth", LocalDate.class),
+                rs.getString("phone_number")
+        ));
+    }
+
+    public List<Patient> searchPatients(String search) {
+        String sql = "SELECT id, first_name, last_name, date_of_birth, phone_number FROM dental.patient WHERE first_name LIKE ? OR last_name LIKE ?";
+        return jdbcTemplate.query(sql, new Object[]{"%" + search + "%", "%" + search + "%"},
+                (rs, rowNum) -> new Patient(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getObject("date_of_birth", LocalDate.class), rs.getString("phone_number")));
+    }
+
+    public Patient getPatientById(Long id) {
+        String sql = "SELECT * FROM dental.patient WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
+            Patient patient = new Patient();
+            patient.setId(rs.getLong("id"));
+            patient.setFirstName(rs.getString("first_name"));
+            patient.setLastName(rs.getString("last_name"));
+            patient.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
+            patient.setPhoneNumber(rs.getString("phone_number"));
+            return patient;
+        });
+    }
 
     public void createPatient(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber) {
         String sql = "INSERT INTO dental.patient (first_name, last_name, date_of_birth, phone_number) VALUES (?, ?, ?, ?)";
@@ -33,29 +63,5 @@ public class PatientRepository {
     public void deleteAllPatients() {
         String sql = "DELETE FROM dental.patient";
         jdbcTemplate.update(sql);
-    }
-
-    public List<Patient> getAllPatients() {
-        String sql = "SELECT * FROM dental.patient";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Patient(
-                rs.getLong("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getObject("date_of_birth", LocalDate.class),
-                rs.getString("phone_number")
-        ));
-    }
-
-    public Patient getPatientById(Long id) {
-        String sql = "SELECT * FROM dental.patient WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
-            Patient patient = new Patient();
-            patient.setId(rs.getLong("id"));
-            patient.setFirstName(rs.getString("first_name"));
-            patient.setLastName(rs.getString("last_name"));
-            patient.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
-            patient.setPhoneNumber(rs.getString("phone_number"));
-            return patient;
-        });
     }
 }

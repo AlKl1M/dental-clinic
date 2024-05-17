@@ -24,12 +24,12 @@ public class SpecialityRepository {
         jdbcTemplate.update("INSERT INTO speciality (name) VALUES (?)", name);
     }
 
-    public void updateSpecialityName(Long id, String newName) {
+    public void updateSpecialityName(Long id, String name) {
         String sql = "UPDATE speciality SET name = ? WHERE id = ?";
-        jdbcTemplate.update(sql, newName, id);
+        jdbcTemplate.update(sql, name, id);
     }
 
-    public void deleteSpeciality(Long id) {
+    public void deleteSpecialityById(Long id) {
         String sql = "DELETE FROM speciality WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }

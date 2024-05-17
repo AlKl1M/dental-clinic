@@ -1,37 +1,46 @@
 package com.bfu.dentalclinic.controller;
 
-import com.bfu.dentalclinic.controller.payload.NewPatientPayload;
-import com.bfu.dentalclinic.controller.payload.UpdatePatientPayload;
+import com.bfu.dentalclinic.controller.payload.patient.NewPatientPayload;
+import com.bfu.dentalclinic.controller.payload.patient.UpdatePatientPayload;
 import com.bfu.dentalclinic.entity.Patient;
 import com.bfu.dentalclinic.repository.PatientRepository;
+import com.bfu.dentalclinic.sevice.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("hospital/patient")
 public class PatientController {
 
-    private PatientRepository patientRepository;
+    private PatientService patientService;
 
     @GetMapping("list")
-    public String getAllPatients(Model model) {
-        model.addAttribute("patients", this.patientRepository.getAllPatients());
+    public String getAllPatients(@RequestParam(required = false) String search, Model model) {
+        List<Patient> patients;
+        if (search != null && !search.isEmpty()) {
+            patients = patientService.searchPatients(search);
+        } else {
+            patients = patientService.getAllPatients();
+        }
+        model.addAttribute("patients", patients);
         return "patient/list";
     }
 
     @GetMapping("/list/{id}")
     public String detailPatient(@PathVariable Long id,
                                 Model model) {
-        model.addAttribute("patient", patientRepository.getPatientById(id));
+        model.addAttribute("patient", patientService.getPatientById(id));
         return "patient/detail";
     }
 
     @PostMapping("create-patient")
     public String createPatient(NewPatientPayload payload) {
-        patientRepository.createPatient(
+        patientService.createPatient(
                 payload.firstName(),
                 payload.lastName(),
                 payload.dateOfBirth(),
@@ -41,7 +50,7 @@ public class PatientController {
 
     @PostMapping("/update-patient/{id}")
     public String updatePatient(@PathVariable Long id, UpdatePatientPayload payload) {
-        patientRepository.updatePatient(id,
+        patientService.updatePatient(id,
                 payload.firstName(),
                 payload.lastName(),
                 payload.dateOfBirth(),
@@ -51,13 +60,13 @@ public class PatientController {
 
     @PostMapping("/{id}")
     public String deletePatientById(@PathVariable Long id) {
-        patientRepository.deletePatientById(id);
+        patientService.deletePatientById(id);
         return "redirect:/hospital/patient/list";
     }
 
     @PostMapping("/delete-patients")
     public String deleteAllPatients() {
-        patientRepository.deleteAllPatients();
+        patientService.deleteAllPatients();
         return "redirect:/hospital/patient/list";
     }
 }
